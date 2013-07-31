@@ -1,0 +1,20 @@
+----------------------------------------
+File list:
+----------------------------------------
+
+libPDFNetC.dylib        Dynamic link library for C/C++/Java/PHP/Python/Ruby programs on Mac OS X.
+
+--JAVA--
+PDFNet.jar              Java interface library.
+
+--Python 2.7.3--
+PDFNetPython2.py        Interface file for Python programs on Windows, Linux, and OSX platforms.
+_PDFNetPython2.so       Dynamic link library for Python programs on Linux and OSX platforms (UCS2).
+
+--Ruby 1.9.2--
+PDFNetRuby.so           Dynamic link library for Ruby programs on Windows, Linux, and OSX platforms.
+
+------
+Above indicated the recommended version of langauge to use with the libraries. The libraries 
+might work with different language versions but compatibility issues may occur.
+
