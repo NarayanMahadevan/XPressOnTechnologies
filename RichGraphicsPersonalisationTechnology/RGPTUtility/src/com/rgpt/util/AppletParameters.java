@@ -350,11 +350,13 @@ public class AppletParameters {
 
 	public static void createPropertySet() {
 		Set<String> propNameSet = m_ServerProperties.stringPropertyNames();
+		RGPTLogger.logToConsole("Prop Name Set Value: " + m_ServerProperties);
 		String[] propNames = propNameSet.toArray(new String[0]);
 		for (int i = 0; i < propNames.length; i++) {
 			m_RequestParamValues.put(propNames[i],
 					m_ServerProperties.getProperty(propNames[i]));
 		}
+		RGPTLogger.logToConsole("Server Properties: " + m_RequestParamValues);
 	}
 
 }
