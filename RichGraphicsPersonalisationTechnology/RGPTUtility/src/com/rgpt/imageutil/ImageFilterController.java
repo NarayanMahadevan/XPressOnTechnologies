@@ -57,7 +57,7 @@ import com.rgpt.imagefilters.UnsharpFilter;
 import com.rgpt.imagefilters.WarpFilter;
 import com.rgpt.imagefilters.WarpGrid;
 import com.rgpt.imagefilters.WaterFilter;
-import com.rgpt.util.AppletParameters;
+import com.rgpt.util.RGPTParams;
 import com.rgpt.util.RGPTActionListener;
 import com.rgpt.util.RGPTLogger;
 import com.rgpt.util.RGPTUtil;
@@ -68,7 +68,7 @@ class ContrastNBrightFilterHdlr implements ImageFilterHandler {
 
 	public static String m_Action;
 	public static int m_Scale = 10;
-	public static float m_Increment = AppletParameters
+	public static float m_Increment = RGPTParams
 			.getFloatVal("StdFilterIncrement");
 	public float m_ContrastValue = 1.0f;
 	public float m_BrightnessValue = 1.0f;
@@ -288,7 +288,7 @@ class OptionControlFilterHdlr implements ImageFilterHandler {
 		m_Action = action;
 		switch (m_Action) {
 		case SpotColorFilters:
-			m_FilterOptions = AppletParameters.getVal(m_Action.toString())
+			m_FilterOptions = RGPTParams.getVal(m_Action.toString())
 					.split("::");
 			break;
 		}
@@ -343,7 +343,7 @@ class OptionControlFilterHdlr implements ImageFilterHandler {
 	private BufferedImage applyFilter(
 			RGPTActionListener.ImageFilterActions action, BufferedImage srcImg) {
 		String[] presetValArr = null;
-		String presetVal = AppletParameters.getVal(action + "_SetValues");
+		String presetVal = RGPTParams.getVal(action + "_SetValues");
 		if (presetVal != null && presetVal.length() > 0)
 			presetValArr = presetVal.split("::");
 		if (m_Status == SetImageFilter.OFF)
@@ -352,7 +352,7 @@ class OptionControlFilterHdlr implements ImageFilterHandler {
 		case SpotColorFilters:
 			String filter = m_FilterOptions[m_Index];
 			RGPTLogger.logToFile(action + " Filter Executed: " + filter);
-			presetVal = AppletParameters.getVal(filter + "_SetValues");
+			presetVal = RGPTParams.getVal(filter + "_SetValues");
 			if (presetVal != null && presetVal.length() > 0)
 				presetValArr = presetVal.split("::");
 			if (filter.equals("PointillizeFilter")) {
@@ -519,7 +519,7 @@ class IncDecControlFilterHdlr implements ImageFilterHandler {
 	private BufferedImage applyFilter(
 			RGPTActionListener.ImageFilterActions action, BufferedImage srcImg) {
 		String[] presetValArr = null;
-		String presetVal = AppletParameters.getVal(action + "_SetValues");
+		String presetVal = RGPTParams.getVal(action + "_SetValues");
 		if (presetVal != null && presetVal.length() > 0)
 			presetValArr = presetVal.split("::");
 		if (m_Status == SetImageFilter.OFF)
@@ -649,7 +649,7 @@ class OnOffControlFilterHdlr implements ImageFilterHandler {
 			return srcImg;
 		BufferedImage resImg = null;
 		String[] presetValArr = null;
-		String presetVal = AppletParameters.getVal(action + "_SetValues");
+		String presetVal = RGPTParams.getVal(action + "_SetValues");
 		if (presetVal != null && presetVal.length() > 0)
 			presetValArr = presetVal.split("::");
 		ImageFilterController imgFltCtrl = m_ImageFilterController;
@@ -828,13 +828,13 @@ class OnOffParamControlFilterHdlr implements ImageFilterHandler {
 		String[] presetValArr = null;
 		float amt = 0.0F, angle = 0.0F, cntrX = 0.0F, cntrY = 0.0F;
 		int index = 0;
-		float percBorder = AppletParameters.getFloatVal("FadeBorderPercent");
-		String actionParam = AppletParameters.getVal(action.toString()
+		float percBorder = RGPTParams.getFloatVal("FadeBorderPercent");
+		String actionParam = RGPTParams.getVal(action.toString()
 				+ "_UseValues", action.toString());
 		// if (actionParam.contains("NEW")) { String[] actionParams =
 		// actionParam.split("NEW");
 		// actionParam = actionParams[0]; }
-		String presetVal = AppletParameters.getVal(actionParam + "_SetValues");
+		String presetVal = RGPTParams.getVal(actionParam + "_SetValues");
 		if (presetVal != null && presetVal.length() > 0)
 			presetValArr = presetVal.split("::");
 		ImageFilterController imgFltCtrl = m_ImageFilterController;
@@ -936,7 +936,7 @@ class OnOffParamControlFilterHdlr implements ImageFilterHandler {
 		case WarpFilter:
 			int w = srcImg.getWidth(),
 			h = srcImg.getHeight();
-			int numGrid = AppletParameters.getIntVal("NumOfGrid");
+			int numGrid = RGPTParams.getIntVal("NumOfGrid");
 			WarpGrid srcGrid = new WarpGrid(numGrid, numGrid, w, h);
 			WarpGrid desGrid = new WarpGrid(numGrid, numGrid, w, h);
 			// RGPTLogger.logToFile("ScrGrid X: "+RGPTUtil.createVector(srcGrid.xGrid)+
@@ -1301,7 +1301,7 @@ class OnOffParamControlFilterHdlr implements ImageFilterHandler {
 			m_ParamSetValues.put("SetFadeMargin", Boolean.toString(true));
 			angle = getFloatValue(getParamValue("Angle", presetValArr[3]));
 			int imgFltrInd = (int) Math.round((angle / 360.0F) * 100);
-			String[] imgFltrs = (AppletParameters.getVal(action.toString()))
+			String[] imgFltrs = (RGPTParams.getVal(action.toString()))
 					.split("::");
 			String imgFltr = imgFltrs[0];
 			if (imgFltrInd >= 0) {
@@ -1337,7 +1337,7 @@ class OnOffParamControlFilterHdlr implements ImageFilterHandler {
 			marbleFilter.setTurbulence(getFloatValue(presetValArr[4]));
 			return marbleFilter.filter(srcImg, null);
 		case SwizzleFilter:
-			String[] matrixOpts = AppletParameters.getVal(action.toString())
+			String[] matrixOpts = RGPTParams.getVal(action.toString())
 					.split("::");
 			amt = getFloatValue(getParamValue("Amount", presetValArr[2]))
 					* matrixOpts.length;
@@ -1381,7 +1381,7 @@ class OnOffParamControlFilterHdlr implements ImageFilterHandler {
 		case CrystallizeFadeFilter:
 		case CrystallizeBorderFilter:
 			RGPTLogger.logToFile(action + " is executed for: " + actionParam);
-			String[] crystalOpts = AppletParameters.getVal(
+			String[] crystalOpts = RGPTParams.getVal(
 					actionParam.toString()).split("::");
 			amt = getFloatValue(getParamValue("Amount", presetValArr[2]));
 			angle = getFloatValue(getParamValue("Angle", presetValArr[3]));
@@ -1422,7 +1422,7 @@ class OnOffParamControlFilterHdlr implements ImageFilterHandler {
 		case PointillizeFadeFilter:
 		case PointillizeBorderFilter:
 			RGPTLogger.logToFile(action + " is executed for: " + actionParam);
-			String[] spotOpts = AppletParameters.getVal(actionParam.toString())
+			String[] spotOpts = RGPTParams.getVal(actionParam.toString())
 					.split("::");
 			amt = getFloatValue(getParamValue("Amount", presetValArr[2]));
 			angle = getFloatValue(getParamValue("Angle", presetValArr[3]));
@@ -1461,7 +1461,7 @@ class OnOffParamControlFilterHdlr implements ImageFilterHandler {
 		case SpotColorFilters:
 			angle = getFloatValue(getParamValue("Angle", presetValArr[3]));
 			int colIndex = Math.round(angle);
-			String[] filterOpts = AppletParameters.getVal(action.toString())
+			String[] filterOpts = RGPTParams.getVal(action.toString())
 					.split("::");
 			amt = getFloatValue(getParamValue("Amount", presetValArr[2]))
 					* filterOpts.length;
@@ -1473,7 +1473,7 @@ class OnOffParamControlFilterHdlr implements ImageFilterHandler {
 			String[] spotFltrValues = null;
 			String[] fltrInfo = filter.split("_");
 			String fltrParam = "";
-			spotFltrSetVal = AppletParameters
+			spotFltrSetVal = RGPTParams
 					.getVal(fltrInfo[0] + "_SetValues");
 			// RGPTLogger.logToFile(action+" Filter Executed: "+filter+" Props: "+
 			// spotFltrSetVal);
@@ -1562,14 +1562,14 @@ class OnOffParamControlFilterHdlr implements ImageFilterHandler {
 
 	private void setDefaultParamValues() {
 		String[] presetValArr = null;
-		String actionParam = AppletParameters.getVal(m_Action.toString()
+		String actionParam = RGPTParams.getVal(m_Action.toString()
 				+ "_UseValues", m_Action.toString());
 		RGPTLogger.logToFile(m_Action + " is executed for: " + actionParam);
 		// if (actionParam.contains("NEW")) { String[] actionParams =
 		// actionParam.split("NEW");
 		// actionParam = actionParams[0]; }
-		String presetVal = AppletParameters.getVal(actionParam + "_SetValues");
-		float radFactor = AppletParameters
+		String presetVal = RGPTParams.getVal(actionParam + "_SetValues");
+		float radFactor = RGPTParams
 				.getFloatVal("ImageFilterRadialFactor");
 		if (presetVal != null && presetVal.length() > 0)
 			presetValArr = presetVal.split("::");

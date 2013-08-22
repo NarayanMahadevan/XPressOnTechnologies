@@ -68,7 +68,6 @@ import com.rgpt.imageutil.ImageHolder;
 import com.rgpt.imageutil.ImageUtils;
 import com.rgpt.layoututil.BasicGridLayout;
 import com.rgpt.layoututil.ParagraphLayout;
-import com.rgpt.viewer.ImagePreview;
 
 public class RGPTUIUtil {
 
@@ -487,7 +486,7 @@ public class RGPTUIUtil {
 				JLabel imglabel = createLabel(imgIcon);
 				button.add(imglabel);
 				int wt = imgIcon.getIconWidth();
-				int ht = AppletParameters.getIntVal("ButtonLabelHeight");
+				int ht = RGPTParams.getIntVal("ButtonLabelHeight");
 				if (size != null)
 					wt = size.width;
 				JLabel label = createLabel(name, wt, ht, "ButtonLabelFontSize");
@@ -605,7 +604,7 @@ public class RGPTUIUtil {
 	public static void setToolTip(JComponent comp, String tip) {
 		if (tip == null || tip.length() == 0)
 			return;
-		int fontSize = AppletParameters.getIntVal("ToolTipFontSize");
+		int fontSize = RGPTParams.getIntVal("ToolTipFontSize");
 		String htmlToolTipText = getHTMLTextForComp(tip, fontSize);
 		comp.setToolTipText(htmlToolTipText);
 	}
@@ -613,7 +612,7 @@ public class RGPTUIUtil {
 	public static JTextField createTextField(String txt, String tip, int nCols,
 			int wt, int ht, int allign, int borderType, boolean setInset,
 			RGPTActionListener listener, String action) {
-		int fontSize = AppletParameters.getIntVal("TextFieldFontSize");
+		int fontSize = RGPTParams.getIntVal("TextFieldFontSize");
 		JTextField txtFld = new JTextField(txt, nCols);
 		Font font = txtFld.getFont();
 		font = font.deriveFont((float) fontSize);
@@ -712,7 +711,7 @@ public class RGPTUIUtil {
 	public static void setCompSize(Component comp, int prefWt, int prefHt,
 			int maxPanelSizeAdj) {
 		if (maxPanelSizeAdj <= 0)
-			maxPanelSizeAdj = AppletParameters.getIntVal("MaxPanelSizeAdj");
+			maxPanelSizeAdj = RGPTParams.getIntVal("MaxPanelSizeAdj");
 		Dimension prefSize = new Dimension(prefWt, prefHt);
 		comp.setMinimumSize(prefSize);
 		comp.setPreferredSize(prefSize);
@@ -839,8 +838,11 @@ public class RGPTUIUtil {
 			String fontSzPropName) {
 		JPanel labelPanel = createLabelPanel(txt, wt, ht, fontSzPropName);
 		// labelPanel.setBackground(Color.WHITE);
-		Border raisedBorder = BorderFactory.createRaisedBevelBorder();
-		labelPanel.setBorder(raisedBorder);
+
+		// Border Options - RAISED_BORDER, LOWERED_BORDER, LINE_BORDER
+		setBorder(labelPanel, LOWERED_BORDER);
+		// Border raisedBorder = BorderFactory.createRaisedBevelBorder();
+		// labelPanel.setBorder(raisedBorder);
 		return labelPanel;
 	}
 
@@ -887,7 +889,7 @@ public class RGPTUIUtil {
 		if (txt == null || txt.length() == 0)
 			return;
 		txt = RGPTUtil.getTextForWidth((double) wt, txt, label.getFont());
-		int fontSize = AppletParameters.getIntVal(fontSzPropName);
+		int fontSize = RGPTParams.getIntVal(fontSzPropName);
 		String labelHtmlText = getHTMLTextForComp(txt, fontSize);
 		label.setText(labelHtmlText);
 	}
@@ -961,7 +963,7 @@ public class RGPTUIUtil {
 			useStream = true;
 		}
 		if (useStream) {
-			String imgPath = "/" + AppletParameters.IMAGE_PATH + imageName;
+			String imgPath = "/" + RGPTParams.IMAGE_PATH + imageName;
 			byte[] buf = ImageUtils.loadImage(imgPath, caller);
 			try {
 				imgIcon = new ImageIcon(java.awt.Toolkit.getDefaultToolkit()
@@ -1088,7 +1090,7 @@ public class RGPTUIUtil {
 		JMenuItem menuItem = null;
 		final JPopupMenu popupMenu = new JPopupMenu(propName);
 
-		String menuData = AppletParameters.getVal(propName);
+		String menuData = RGPTParams.getVal(propName);
 		RGPTLogger.logToFile("menuData: " + menuData);
 		String[] itemDataList = menuData.split(":NL:");
 		for (int iitem = 0; iitem < itemDataList.length; iitem++) {
@@ -1130,13 +1132,13 @@ public class RGPTUIUtil {
 		String[] imgFilterOptions = null, imgFilterParam = null;
 		String[] imgFilterSpec = null, toolBarBtns = null;
 		LocalizationUtil lu = new LocalizationUtil();
-		int labelHt = AppletParameters.getIntVal("LabelHeight");
-		int emptyPanelHt = AppletParameters.getIntVal("EmptyPanelHeight");
+		int labelHt = RGPTParams.getIntVal("LabelHeight");
+		int emptyPanelHt = RGPTParams.getIntVal("EmptyPanelHeight");
 		JPanel mainImgFilterPanel = new JPanel(), emptyPanel = null;
 		JPanel imgFilterPanel = null, imgFilterParamPanel = null;
 		// mainImgFilterPanel.setLayout(new BoxLayout(mainImgFilterPanel,
 		// BoxLayout.Y_AXIS));
-		imgFilterContent = AppletParameters.getVal(imgFilterAction);
+		imgFilterContent = RGPTParams.getVal(imgFilterAction);
 		RGPTLogger.logToFile("Image Filters: " + imgFilterContent);
 		imgFilterOptions = imgFilterContent.split(":NF:");
 		mainImgFilterPanel.setLayout(new BasicGridLayout(
@@ -1268,7 +1270,7 @@ public class RGPTUIUtil {
 		setCompSize(toolbar, size.width, size.height, 0);
 		setBorder(toolbar, RGPTUIUtil.LOWERED_BORDER);
 		toolbar.setFloatable(isFloatable);
-		content = AppletParameters.getVal(propName);
+		content = RGPTParams.getVal(propName);
 		RGPTLogger.logToFile("cont: " + content);
 		String[] contentPara = content.split(":NP:"), uiInfo = null;
 		for (int ipara = 0; ipara < contentPara.length; ipara++) {
@@ -1336,11 +1338,11 @@ public class RGPTUIUtil {
 		JTextField fldBox = null;
 
 		// Component Sizes
-		int comboWt = AppletParameters.getIntVal("ComboWidth");
-		int comboHt = AppletParameters.getIntVal("ComboHeight");
-		int fldCols = AppletParameters.getIntVal("TextFieldCols");
-		int fldWt = AppletParameters.getIntVal("TextFieldWidth");
-		int fldHt = AppletParameters.getIntVal("TextFieldHeight");
+		int comboWt = RGPTParams.getIntVal("ComboWidth");
+		int comboHt = RGPTParams.getIntVal("ComboHeight");
+		int fldCols = RGPTParams.getIntVal("TextFieldCols");
+		int fldWt = RGPTParams.getIntVal("TextFieldWidth");
+		int fldHt = RGPTParams.getIntVal("TextFieldHeight");
 		Dimension contentPaneSize = RGPTUtil
 				.getCompSize((basePropName + "_SIZE"));
 		setCompSize(contentMainPane, contentPaneSize.width,
@@ -1359,7 +1361,7 @@ public class RGPTUIUtil {
 		Integer newPara = ParagraphLayout.NEW_PARAGRAPH;
 		JPanel contentPane = new JPanel();
 		contentPane.setLayout(new ParagraphLayout(20, 20, 12, 11, 4, 4));
-		String contentData = AppletParameters.getVal(basePropName + "_CONTENT");
+		String contentData = RGPTParams.getVal(basePropName + "_CONTENT");
 		RGPTLogger.logToFile("contentData: " + contentData);
 		String[] contentPara = contentData.split(":NP:");
 		for (int ipara = 0; ipara < contentPara.length; ipara++) {
@@ -1411,19 +1413,19 @@ public class RGPTUIUtil {
 				}
 			}
 		}
-		int emptyPanelHt = AppletParameters.getIntVal("EmptyPanelHeight");
+		int emptyPanelHt = RGPTParams.getIntVal("EmptyPanelHeight");
 		JPanel emptyPanel = RGPTUIUtil.createEmptyPanel(
 				contentMainPane.getPreferredSize().width, emptyPanelHt);
 		contentMainPane.add(emptyPanel, BorderLayout.NORTH);
 		contentMainPane.add(contentPane, BorderLayout.CENTER);
 
-		int wt = AppletParameters.getIntVal("DialogButtonWidth");
-		int ht = AppletParameters.getIntVal("DialogButtonHeight");
+		int wt = RGPTParams.getIntVal("DialogButtonWidth");
+		int ht = RGPTParams.getIntVal("DialogButtonHeight");
 		int vGap = 10, hGap = 25;
 		JPanel actionPane = new JPanel(new FlowLayout(FlowLayout.CENTER, hGap,
 				vGap));
 		actionPane.setBackground(RGPTUIManager.BG_COLOR);
-		String actionData = AppletParameters.getVal(basePropName + "_SUBMIT");
+		String actionData = RGPTParams.getVal(basePropName + "_SUBMIT");
 		RGPTLogger.logToFile("actionData: " + actionData);
 		String[] actionInfo = actionData.split(":UI:");
 		for (int iact = 0; iact < actionInfo.length; iact++) {
@@ -1719,9 +1721,9 @@ public class RGPTUIUtil {
 			RGPTActionListener listener, Map<String, String> stepSel, int vgap) {
 		Vector<JButton> actionButtons = new Vector<JButton>();
 		LocalizationUtil lu = new LocalizationUtil();
-		int stepWt = AppletParameters.getIntVal("WFStepWidth");
-		int stepHt = AppletParameters.getIntVal("WFStepHeight");
-		String[] steps = (AppletParameters.getVal(wfProp)).split(":NS:");
+		int stepWt = RGPTParams.getIntVal("WFStepWidth");
+		int stepHt = RGPTParams.getIntVal("WFStepHeight");
+		String[] steps = (RGPTParams.getVal(wfProp)).split(":NS:");
 
 		wfMainPanel.setLayout(new BoxLayout(wfMainPanel, BoxLayout.Y_AXIS));
 
@@ -1767,8 +1769,8 @@ public class RGPTUIUtil {
 	}
 
 	public static BufferedImage createThumbPreviewImage(BufferedImage origImage) {
-		int thumbImgWt = AppletParameters.getIntVal("ThumbviewImageWidth");
-		int thumbImgHt = AppletParameters.getIntVal("ThumbviewImageHeight");
+		int thumbImgWt = RGPTParams.getIntVal("ThumbviewImageWidth");
+		int thumbImgHt = RGPTParams.getIntVal("ThumbviewImageHeight");
 		return ImageUtils.scaleImage(origImage, -1, thumbImgHt, true);
 	}
 

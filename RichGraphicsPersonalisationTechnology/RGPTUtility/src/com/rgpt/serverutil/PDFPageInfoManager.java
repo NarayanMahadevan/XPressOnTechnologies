@@ -29,7 +29,7 @@ import com.rgpt.templateutil.PDFPageHolder;
 import com.rgpt.templateutil.PDFPageInfo;
 import com.rgpt.templateutil.VDPImageFieldInfo;
 import com.rgpt.templateutil.VDPTextFieldInfo;
-import com.rgpt.util.AppletParameters;
+import com.rgpt.util.RGPTParams;
 import com.rgpt.util.BatchApprovalRequest;
 import com.rgpt.util.RGPTLogger;
 import com.rgpt.util.RGPTRectangle;
@@ -55,7 +55,7 @@ public class PDFPageInfoManager implements ThreadInvokerMethod {
 	public static Properties m_ServerProperties;
 
 	// Applet Parameters
-	public AppletParameters m_AppletParameters;
+	public RGPTParams m_AppletParameters;
 
 	// Work In Progress Parameter. If Worj is Saved in between this
 	// parameter is set to true
@@ -71,7 +71,7 @@ public class PDFPageInfoManager implements ThreadInvokerMethod {
 		boolean isServerMode = false;
 		if (this.m_Mode == SERVER_MODE)
 			isServerMode = true;
-		m_ServerProperties = AppletParameters.createServerProperties(
+		m_ServerProperties = RGPTParams.createServerProperties(
 				this.getClass(), isServerMode);
 	}
 
@@ -94,19 +94,19 @@ public class PDFPageInfoManager implements ThreadInvokerMethod {
 
 	// This method is invoked by the Applet
 
-	public void loadViewPDFRequest(AppletParameters appletParameters,
+	public void loadViewPDFRequest(RGPTParams appletParameters,
 			PDFViewInterface pdfView) {
 		m_AppletParameters = appletParameters;
 		m_PDFViewImpl = pdfView;
 	}
 
-	public void loadSavedPDFPage(AppletParameters appletParameters,
+	public void loadSavedPDFPage(RGPTParams appletParameters,
 			PDFViewInterface pdfView) {
 		m_AppletParameters = appletParameters;
 		m_PDFViewImpl = pdfView;
 	}
 
-	public void loadPDFPage(AppletParameters appletParameters,
+	public void loadPDFPage(RGPTParams appletParameters,
 			PDFViewInterface pdfView) throws Exception {
 		m_AppletParameters = appletParameters;
 		m_PDFViewImpl = pdfView;
@@ -294,7 +294,7 @@ public class PDFPageInfoManager implements ThreadInvokerMethod {
 		// Populating the Server Requeste
 		try {
 			ServerInterface serverReq = null;
-			AppletParameters params = m_AppletParameters;
+			RGPTParams params = m_AppletParameters;
 			serverReq = new ServerInterface(
 					m_AppletParameters.m_ServiceIdentifier,
 					m_AppletParameters.m_ServerName,
@@ -769,7 +769,7 @@ public class PDFPageInfoManager implements ThreadInvokerMethod {
 		if (this.m_Mode == SERVER_MODE)
 			isServerMode = true;
 		if (m_ServerProperties == null)
-			m_ServerProperties = AppletParameters.createServerProperties(
+			m_ServerProperties = RGPTParams.createServerProperties(
 					this.getClass(), isServerMode);
 		// RGPTLogger.logToFile("Applet Params: " +
 		// m_AppletParameters.toString());
@@ -777,9 +777,9 @@ public class PDFPageInfoManager implements ThreadInvokerMethod {
 				&& m_AppletParameters.m_AppletURL != null)
 			return ServerProxy.makeServerRequest(
 					m_AppletParameters.m_AppletURL, "VDPServer", serverReq);
-		else if (AppletParameters.getVal("CodeBase") != null) {
-			String url = AppletParameters.getVal("CodeBase");
-			String servletName = AppletParameters.getVal("ServletName");
+		else if (RGPTParams.getVal("CodeBase") != null) {
+			String url = RGPTParams.getVal("CodeBase");
+			String servletName = RGPTParams.getVal("ServletName");
 			RGPTLogger.logToFile("URL: " + url + " Servlet Name: "
 					+ servletName, true);
 			return ServerProxy.makeServerRequest(url, servletName, serverReq);

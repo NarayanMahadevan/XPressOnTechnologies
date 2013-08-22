@@ -1,15 +1,9 @@
 // RGPT PACKAGES
 package com.rgpt.util;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
 
 public class AppletParameters {
 	public static String LOAD_APPLET_REQUEST = "Load Applet Request";
@@ -33,7 +27,15 @@ public class AppletParameters {
 	public int m_FrameHeight;
 	public static int m_ServiceIdentifier;
 	public static int m_DigitalAssetId;
-
+	/*
+	 * public int m_CustomerId; public int m_CustomerAccountId; public int
+	 * m_TemplateId; public int m_PDFPageCount; public String m_SessionId;
+	 * public int m_CustomerBasketId; public int m_SessionAssetId;
+	 * 
+	 * // This variable is used to identify the type of PSP Asset. This includes
+	 * assets // for Fast Shopping Asset, PDF Template Asset, etc public String
+	 * m_AssetType;
+	 */
 	// This indicates the Server that will execute the request in the backend.
 	public static String m_ServerName;
 
@@ -48,9 +50,31 @@ public class AppletParameters {
 	// This variables are used to set the PDF Approval with in EBook Viewer
 	public static boolean m_ImageBatchUpload;
 
-	// pointer to resource folder
-	public static String IMAGE_PATH = "res/pdfviewer/";
-
+	/*
+	 * // This indicates the required applet parameters for each type of request
+	 * public boolean m_IsEditPDFParametersLoaded;
+	 * 
+	 * // This indicates if multiple files can be uploaded public boolean
+	 * m_AllowMultipleFileUpload;
+	 * 
+	 * // This is set to do File Upload in the Background or otherwise public
+	 * boolean m_WaitForFileUpload;
+	 * 
+	 * // This variable is used to enable or disable page animation with in
+	 * EBook // Viewer. If page animation is enable, animation speed can also be
+	 * set. public boolean m_EnablePageAnimation; public int
+	 * m_PageAnimationSpeed; public int m_PageAnimationStep;
+	 * 
+	 * // This variables are used to set the PDF Approval with in EBook Viewer
+	 * public boolean m_EnablePDFApproval; public int m_BatchId; public int
+	 * m_TemplatePageCount;
+	 * 
+	 * // File Filter to identify the file types for upload public
+	 * RGPTFileFilter m_FileFilter;
+	 * 
+	 * // Order and Job id Field needed when updated asset for job is uploaded
+	 * public int m_OrderId; public int m_OrderJobId;
+	 */
 	public static Map<String, String[]> m_RequestParamSet = new HashMap<String, String[]>();
 	public static Map<String, Boolean> m_RequestReqParamSet = new HashMap<String, Boolean>();
 	public static Map<String, String> m_RequestParamValues = new HashMap<String, String>();
@@ -127,6 +151,15 @@ public class AppletParameters {
 		m_DigitalAssetId = -1;
 		m_ServiceIdentifier = -1;
 		m_ImageBatchUpload = false;
+		/*
+		 * m_SessionId = null; m_CustomerId = -1; m_CustomerAccountId = -1;
+		 * m_TemplateId = -1; m_PDFPageCount = -1; m_SessionAssetId = -1;
+		 * m_CustomerBasketId = -1; m_WaitForFileUpload = true; m_BatchId = -1;
+		 * m_TemplatePageCount = -1; m_IsEditPDFParametersLoaded = false;
+		 * m_AllowMultipleFileUpload = false; m_PageAnimationSpeed = 10;
+		 * m_PageAnimationStep = 16; m_EnablePDFApproval= false;
+		 * m_EnablePageAnimation = false; m_OrderId = -1; m_OrderJobId = -1;
+		 */
 	}
 
 	public static void populateAppletParams() {
@@ -147,7 +180,7 @@ public class AppletParameters {
 		return true;
 	}
 
-	public boolean uploadRequestParams(Map<String, String> appletParameters,
+	public boolean uploadRequestParams(HashMap appletParameters,
 			StringBuffer errMsg) {
 		String value = "";
 		boolean isSuccess = true;
@@ -269,94 +302,4 @@ public class AppletParameters {
 			mesg.append("\n URL: " + m_AppletURL.toString());
 		return mesg.toString();
 	}
-
-	// Server Settings
-	public static Properties m_ServerProperties;
-
-	public static void setServerProperties(Properties servProp) {
-		m_ServerProperties = servProp;
-	}
-
-	public static Properties createServerProperties() {
-		return createServerProperties(null, false);
-	}
-
-	public static Properties createServerProperties(Class<?> caller,
-			boolean isServerMode) {
-		if (m_ServerProperties != null)
-			return m_ServerProperties;
-		String propFile = null;
-		InputStream ipStream = null;
-		BufferedInputStream propStream = null;
-		try {
-			// Read properties file. This will be moved out into a seperate
-			// Utility class in future
-			if (isServerMode)
-				propFile = "res/server_prod.properties";
-			else
-				propFile = "res/server_dev.properties";
-			try {
-				ipStream = new FileInputStream(new File(propFile));
-			} catch (Exception ex) {
-				// ex.printStackTrace();
-				propFile = "/" + propFile;
-				try {
-					ipStream = caller.getResourceAsStream(propFile);
-				} catch (Exception exp) {
-					exp.printStackTrace();
-				}
-			}
-			if (ipStream == null) {
-				System.err.println("Couldn't find file: " + propFile);
-				return null;
-			}
-			m_ServerProperties = new Properties();
-			propStream = new BufferedInputStream(ipStream);
-			RGPTLogger.logToConsole("Property Stream Not Null: " + propStream);
-			RGPTLogger.logToConsole("Property Stream: "
-					+ propStream.available());
-			m_ServerProperties.load(propStream);
-			// RGPTLogger.logToConsole("Server Property: " +
-			// m_ServerProperties.toString());
-			createPropertySet();
-			return m_ServerProperties;
-		} catch (Throwable ex) {
-			try {
-				java.io.FileInputStream fileStream = new java.io.FileInputStream(
-						propFile);
-				RGPTLogger.logToConsole("Available Size: "
-						+ fileStream.available());
-				m_ServerProperties.load(fileStream);
-				return m_ServerProperties;
-			} catch (Exception exp) {
-				exp.printStackTrace();
-				throw new RuntimeException("Unable to Load Server Properties");
-			}
-		} finally {
-			if (ipStream != null) {
-				try {
-					ipStream.close();
-				} catch (Exception ex) {
-				}
-			}
-			if (propStream != null) {
-				try {
-					propStream.close();
-				} catch (Exception ex) {
-				}
-			}
-		}
-	}
-
-	public static void createPropertySet() {
-		Set<String> propNameSet = m_ServerProperties.stringPropertyNames();
-		RGPTLogger.logToConsole("Prop Name Set Value: " + m_ServerProperties);
-		String[] propNames = propNameSet.toArray(new String[0]);
-		for (int i = 0; i < propNames.length; i++) {
-			m_RequestParamValues.put(propNames[i],
-					m_ServerProperties.getProperty(propNames[i]));
-		}
-		RGPTLogger.logToConsole("Server Properties: " + m_RequestParamValues);
-	}
-
 }

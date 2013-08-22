@@ -63,8 +63,8 @@ public class RGPTUtil {
 
 	// Check for P3 Server
 	public static boolean isP3Server() {
-		if (AppletParameters.m_RequestParamValues != null) {
-			String serverName = AppletParameters.getVal("ServerName");
+		if (RGPTParams.m_RGPTParamValues != null) {
+			String serverName = RGPTParams.getVal("ServerName");
 			if (serverName != null && !serverName.isEmpty()
 					&& serverName.equals("P3Server"))
 				return true;
@@ -1697,11 +1697,11 @@ public class RGPTUtil {
 	}
 
 	public static String getShapesDirectory(String userType) {
-		String outDir = AppletParameters.getVal("XONOutDir");
+		String outDir = RGPTParams.getVal("XONOutDir");
 		createDir(outDir, true);
-		String shapeDir = AppletParameters.getVal("XONUserShapesDir");
+		String shapeDir = RGPTParams.getVal("XONUserShapesDir");
 		if (userType.equals("admin"))
-			shapeDir = AppletParameters.getVal("XONSystemShapesDir");
+			shapeDir = RGPTParams.getVal("XONSystemShapesDir");
 		String shapeOutDir = outDir + shapeDir;
 		createDir(shapeOutDir, true);
 		return shapeOutDir;
@@ -1710,9 +1710,9 @@ public class RGPTUtil {
 	// This not only gets the Shapes Directory Structure but also creates one if
 	// not existent
 	public static String getXONImageDir() {
-		String outDir = AppletParameters.getVal("XONOutDir");
+		String outDir = RGPTParams.getVal("XONOutDir");
 		createDir(outDir, true);
-		String imgDir = AppletParameters.getVal("XONImageDesigner");
+		String imgDir = RGPTParams.getVal("XONImageDesigner");
 		String imgOutDir = outDir + imgDir;
 		createDir(imgOutDir, true);
 		return imgOutDir;
@@ -1732,13 +1732,13 @@ public class RGPTUtil {
 	}
 
 	public static Dimension getCompSize(String propName) {
-		String[] val = AppletParameters.getVal(propName).split("::");
+		String[] val = RGPTParams.getVal(propName).split("::");
 		return new Dimension((new Integer(val[0])).intValue(), (new Integer(
 				val[1])).intValue());
 	}
 
 	public static Map<String, String> getPropertyValues(String propName) {
-		String[] propValues = AppletParameters.getVal(propName).split("::");
+		String[] propValues = RGPTParams.getVal(propName).split("::");
 		Map<String, String> propValMap = new HashMap<String, String>();
 		LocalizationUtil lu = new LocalizationUtil();
 		for (int i = 0; i < propValues.length; i++) {
@@ -1856,6 +1856,22 @@ public class RGPTUtil {
 			RGB_COLORS[i] = col.getRGB();
 		}
 		return RGB_COLORS;
+	}
+
+	public static Rectangle getRectangle(Point2D p1, Point2D p2) {
+		double x1, y1, x2, y2;
+		double resX1, resY1, resWidth, resHeight;
+		x1 = p1.getX();
+		y1 = p1.getY();
+		x2 = p2.getX();
+		y2 = p2.getY();
+		resX1 = Math.min(x1, x2);
+		resY1 = Math.min(y1, y2);
+		resWidth = Math.abs(x1 - x2);
+		resHeight = Math.abs(y1 - y2);
+		Rectangle rect = new Rectangle((int) resX1, (int) resY1,
+				(int) resWidth, (int) resHeight);
+		return rect;
 	}
 
 }

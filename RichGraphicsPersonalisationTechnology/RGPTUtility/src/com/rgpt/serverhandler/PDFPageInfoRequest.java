@@ -3,7 +3,7 @@ package com.rgpt.serverhandler;
 
 import java.io.Serializable;
 
-import com.rgpt.util.AppletParameters;
+import com.rgpt.util.RGPTParams;
 
 // This is the PDFPageInfoRequest to the Server. The response is the Serialized PDFPageInfo Object
 public class PDFPageInfoRequest extends ServerRequest implements Serializable
@@ -25,19 +25,19 @@ public class PDFPageInfoRequest extends ServerRequest implements Serializable
       m_SrcDir = srcDir;
       m_TemplateId = tempId;
       m_SerializedFileName = serFileName;
-      m_AppletRequest = AppletParameters.EDIT_PDF_TEMPLATE_REQUEST;
+      m_AppletRequest = RGPTParams.EDIT_PDF_TEMPLATE_REQUEST;
    }
    
    public void setViewPDFRequest(int assetId, int pgNum, String srcDir, 
                                   String serFileName) 
    {
-      m_AppletRequest = AppletParameters.VIEW_PDF_REQUEST;
+      m_AppletRequest = RGPTParams.VIEW_PDF_REQUEST;
       this.setViewAndApprovePDFRequest(assetId, pgNum, srcDir, serFileName);
    }
    public void setApprovePDFRequest(int assetId, int pgNum, String srcDir, 
                                      String serFileName) 
    {
-      m_AppletRequest = AppletParameters.APPROVE_PDF_REQUEST;
+      m_AppletRequest = RGPTParams.APPROVE_PDF_REQUEST;
       this.setViewAndApprovePDFRequest(assetId, pgNum, srcDir, serFileName);
    }
    private void setViewAndApprovePDFRequest(int assetId, int pgNum, String srcDir, 

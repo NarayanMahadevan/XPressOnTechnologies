@@ -13,7 +13,7 @@ public class RGPTMemoryManager implements ThreadInvokerMethod {
 
 	private RGPTMemoryManager() {
 		m_MemoryData = new Vector<RecycleMemoryData>();
-		m_MemoryCheckInterval = AppletParameters
+		m_MemoryCheckInterval = RGPTParams
 				.getIntVal("MemoryCheckInterval");
 		RGPTThreadWorker threadWorker = null;
 		HashMap requestData = new HashMap();

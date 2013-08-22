@@ -11,12 +11,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-import com.rgpt.model.ImagePointHolder;
-import com.rgpt.model.SelectedPixelPointHolder;
+import com.rgpt.util.ImagePointHolder;
 import com.rgpt.util.RGPTActionListener;
 import com.rgpt.util.RGPTLogger;
 import com.rgpt.util.RGPTShapeUtil;
 import com.rgpt.util.RGPTUtil;
+import com.rgpt.util.SelectedPixelPointHolder;
 
 // Image Holder Object life spans beyond Image Maker and Image Panel. It is used 
 // in XONImageDesigner, which uses the Final Image in creating a Composite

@@ -36,7 +36,6 @@ import com.rgpt.imageutil.ImageHolder;
 import com.rgpt.imageutil.ImagePersonalizationEngine;
 import com.rgpt.imageutil.ImageUtils;
 import com.rgpt.serverhandler.ImageHandlerInterface;
-import com.rgpt.serverhandler.PDFPageHandler;
 import com.rgpt.serverhandler.PDFViewInterface;
 import com.rgpt.serverhandler.PersonalizedPDFFormRequest;
 import com.rgpt.serverhandler.ServerResponse;
@@ -374,7 +373,7 @@ public class PDFPersonalizationUtil {
 				 * vdpData.put("UserSetValue", vdpText);
 				 * vdpData.put("UserSetFinalValue", vdpfinalTxt); } //if
 				 * (vdpTextFieldInfo
-				 * .m_TextAllignment.equals(PDFPageHandler.ALLIGN_LEFT)) //
+				 * .m_TextAllignment.equals(StaticFieldInfo.ALLIGN_LEFT)) //
 				 * continue; // Narayan - Not needed after using Java to
 				 * construct Final PDF // this.calcStartPoint(pgInfo,
 				 * vdpTextFieldInfo, vdpData); // RGPTRectangle lineBBox =
@@ -462,12 +461,12 @@ public class PDFPersonalizationUtil {
 			String allign = (String) vdpData.get("TextAllignment");
 			double totTxtWt = getLineTxtWidth(vdpTxtWords);
 			lineRect = lineBBoxArr[j].getRectangle2D();
-			if (allign.equals(PDFPageHandler.ALLIGN_LEFT))
+			if (allign.equals(StaticFieldInfo.ALLIGN_LEFT))
 				this.calcDevBBox4LeftAllign(pgInfo, vdpTxtWords, lineRect);
-			else if (allign.equals(PDFPageHandler.ALLIGN_CENTER))
+			else if (allign.equals(StaticFieldInfo.ALLIGN_CENTER))
 				this.calcDevBBox4CenterAllign(pgInfo, vdpTxtWords, lineRect,
 						totTxtWt);
-			else if (allign.equals(PDFPageHandler.ALLIGN_RIGHT))
+			else if (allign.equals(StaticFieldInfo.ALLIGN_RIGHT))
 				this.calcDevBBox4RightAllign(pgInfo, vdpTxtWords, lineRect);
 		}
 	}
@@ -1218,13 +1217,13 @@ public class PDFPersonalizationUtil {
 				vdpData = vdpTxtWords.elementAt(j);
 				String allign = (String) vdpData.get("TextAllignment");
 				if (j == 0) {
-					if (allign.equals(PDFPageHandler.ALLIGN_LEFT))
+					if (allign.equals(StaticFieldInfo.ALLIGN_LEFT))
 						this.calcDevBBox4LeftAllign(pgInfo, vdpTxtWords,
 								lineRect);
-					else if (allign.equals(PDFPageHandler.ALLIGN_CENTER))
+					else if (allign.equals(StaticFieldInfo.ALLIGN_CENTER))
 						this.calcDevBBox4CenterAllign(pgInfo, vdpTxtWords,
 								lineRect, totTxtWt);
-					else if (allign.equals(PDFPageHandler.ALLIGN_RIGHT))
+					else if (allign.equals(StaticFieldInfo.ALLIGN_RIGHT))
 						this.calcDevBBox4RightAllign(pgInfo, vdpTxtWords,
 								lineRect);
 				}
@@ -1646,7 +1645,7 @@ public class PDFPersonalizationUtil {
 				vdpData.put("FillWidth", textWidth);
 			Color txtColor = new Color(vdpTextFieldInfo.m_FillColor);
 			int scale = (int) (pgInfo.m_Scale * 100);
-			if (allign.equals(PDFPageHandler.ALLIGN_LEFT)) {
+			if (allign.equals(StaticFieldInfo.ALLIGN_LEFT)) {
 				if (drawSelVDPTextOnly) {
 					// This part of the code displays the text during edit with
 					// larger Font.
@@ -1708,10 +1707,10 @@ public class PDFPersonalizationUtil {
 
 			// Center or Right Allign text horizontally
 			// if (vdpTextFieldInfo.m_TextAllignment.equals("CENTER"))
-			if (allign.equals(PDFPageHandler.ALLIGN_CENTER))
+			if (allign.equals(StaticFieldInfo.ALLIGN_CENTER))
 				startx = (panelWidth - textWidth) / 2;
 			// else if (vdpTextFieldInfo.m_TextAllignment.equals("RIGHT"))
-			else if (allign.equals(PDFPageHandler.ALLIGN_RIGHT))
+			else if (allign.equals(StaticFieldInfo.ALLIGN_RIGHT))
 				startx = (panelWidth - textWidth);
 			RGPTLogger.logToFile("Text Field: " + vdpData.get("VDPFieldName")
 					+ " vdpText: " + vdpText + " drawSelVDPTextOnly: "
@@ -1727,11 +1726,11 @@ public class PDFPersonalizationUtil {
 					font = font.deriveFont((new Float(20)).floatValue());
 					fm = g2d.getFontMetrics(font);
 					textRect = fm.getStringBounds(vdpText, g2d);
-					if (allign.equals(PDFPageHandler.ALLIGN_CENTER))
+					if (allign.equals(StaticFieldInfo.ALLIGN_CENTER))
 						startx = (panelWidth - textRect.getWidth()) / 2;
 					// else if
 					// (vdpTextFieldInfo.m_TextAllignment.equals("RIGHT"))
-					else if (allign.equals(PDFPageHandler.ALLIGN_RIGHT))
+					else if (allign.equals(StaticFieldInfo.ALLIGN_RIGHT))
 						startx = (panelWidth - textRect.getWidth());
 				}
 				Rectangle2D.Double fillRect = new Rectangle2D.Double();
@@ -2457,7 +2456,7 @@ public class PDFPersonalizationUtil {
 		if (m_DirectionIcon != null)
 			return m_DirectionIcon;
 		try {
-			String imgLocation = PDFPageHandler.IMAGE_PATH + "direction.png";
+			String imgLocation = StaticFieldInfo.IMAGE_PATH + "direction.png";
 			m_DirectionIcon = ImageUtils.getBufferedImage(imgLocation,
 					this.getClass());
 			// ImageUtils.displayImage(m_DirectionIcon, "Direction Image");
@@ -3018,7 +3017,7 @@ public class PDFPersonalizationUtil {
 	public void calcStartPoint(PDFPageInfo pgInfo,
 			VDPTextFieldInfo vdpTextFieldInfo, HashMap vdpData) {
 		String allign = (String) vdpData.get("TextAllignment");
-		if (allign.equals(PDFPageHandler.ALLIGN_LEFT))
+		if (allign.equals(StaticFieldInfo.ALLIGN_LEFT))
 			return;
 		Rectangle2D.Double screenRect = null;
 		Point2D.Double srcPt, desPt = null;
@@ -3064,10 +3063,10 @@ public class PDFPersonalizationUtil {
 		double startx = 0.0;
 		// if (vdpTextFieldInfo.m_TextAllignment.equals("CENTER"))
 		// String allign = (String) vdpData.get("TextAllignment");
-		if (allign.equals(PDFPageHandler.ALLIGN_CENTER))
+		if (allign.equals(StaticFieldInfo.ALLIGN_CENTER))
 			startx = (panelWidth - textWidth) / 2;
 		// else if (vdpTextFieldInfo.m_TextAllignment.equals("RIGHT"))
-		else if (allign.equals(PDFPageHandler.ALLIGN_RIGHT))
+		else if (allign.equals(StaticFieldInfo.ALLIGN_RIGHT))
 			startx = (panelWidth - textWidth);
 		RGPTLogger.logToFile("StartPtX: " + startx);
 		vdpData.put("StartPtX", startx);
@@ -3182,12 +3181,13 @@ public class PDFPersonalizationUtil {
  * 
  * private void calcStartPoint(PDFPageInfo pgInfo, VDPTextFieldInfo
  * vdpTextFieldInfo, HashMap vdpData) { String allign = (String)
- * vdpData.get("TextAllignment"); if (allign.equals(PDFPageHandler.ALLIGN_LEFT))
- * return; Rectangle2D.Double screenRect = null; Point2D.Double srcPt, desPt =
- * null; RGPTLogger.logToFile("VDP Text Object: " +
- * vdpTextFieldInfo.toString()); Font font = vdpTextFieldInfo.m_Font; srcPt =
- * new Point2D.Double(vdpTextFieldInfo.m_StartX, vdpTextFieldInfo.m_StartY);
- * desPt = new Point2D.Double(); AffineTransform finalCTM = null; finalCTM =
+ * vdpData.get("TextAllignment"); if
+ * (allign.equals(StaticFieldInfo.ALLIGN_LEFT)) return; Rectangle2D.Double
+ * screenRect = null; Point2D.Double srcPt, desPt = null;
+ * RGPTLogger.logToFile("VDP Text Object: " + vdpTextFieldInfo.toString()); Font
+ * font = vdpTextFieldInfo.m_Font; srcPt = new
+ * Point2D.Double(vdpTextFieldInfo.m_StartX, vdpTextFieldInfo.m_StartY); desPt =
+ * new Point2D.Double(); AffineTransform finalCTM = null; finalCTM =
  * this.getScreenPts(pgInfo, vdpTextFieldInfo.m_ElementCTM,
  * vdpTextFieldInfo.m_TextMatrix, srcPt, desPt);
  * RGPTLogger.logToFile("Final CTM After Screen Pts: " + finalCTM.toString());
@@ -3206,9 +3206,9 @@ public class PDFPersonalizationUtil {
  * "Trans Panel Width: " + panelWidth);
  * 
  * // Center or Right Allign text horizontally double startx = 0.0; if
- * (vdpTextFieldInfo.m_TextAllignment.equals(PDFPageHandler.ALLIGN_CENTER))
+ * (vdpTextFieldInfo.m_TextAllignment.equals(StaticFieldInfo.ALLIGN_CENTER))
  * startx = (panelWidth - textWidth)/2; else if
- * (vdpTextFieldInfo.m_TextAllignment.equals(PDFPageHandler.ALLIGN_RIGHT))
+ * (vdpTextFieldInfo.m_TextAllignment.equals(StaticFieldInfo.ALLIGN_RIGHT))
  * startx = (panelWidth - textWidth); vdpData.put("StartPtX", startx);
  * RGPTLogger.logToFile("Start X Pos: " + startx); }
  */

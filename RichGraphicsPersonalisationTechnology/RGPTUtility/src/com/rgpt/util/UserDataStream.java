@@ -20,11 +20,11 @@ public class UserDataStream implements Serializable
       String oldVal = m_UserData.get(name);
       if (oldVal != null && oldVal.equals(value)) return;
       m_UserData.put(name, value);
-      AppletParameters.m_RequestParamValues.put(name, value);
+      RGPTParams.m_RGPTParamValues.put(name, value);
       try 
       {
          if (m_SerializeFilePath == null || m_SerializeFilePath.trim().isEmpty()) 
-            m_SerializeFilePath = AppletParameters.getVal("DataFilePath");
+            m_SerializeFilePath = RGPTParams.getVal("DataFilePath");
          RGPTUtil.serializeObject(m_SerializeFilePath, this);
       }
       catch (Exception ex) 

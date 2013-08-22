@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-import com.rgpt.util.AppletParameters;
+import com.rgpt.util.RGPTParams;
 import com.rgpt.util.RGPTActionListener;
 import com.rgpt.util.RGPTActionListener.ImageFilterActions;
 import com.rgpt.util.RGPTFileFilter;
@@ -289,7 +289,7 @@ public class ImageHolder implements Serializable {
 		// Check for Transperency and correspondingly choose Background to
 		// create Image
 		if (!m_ImageHasAlpha) {
-			float compQuality = (float) AppletParameters
+			float compQuality = (float) RGPTParams
 					.getIntVal("IMAGE_COMPRESSION") / (float) 10;
 			m_RegularImage = ImageUtils.compressImage(m_RegularImage,
 					compQuality);
@@ -328,7 +328,7 @@ public class ImageHolder implements Serializable {
 					m_BackgroundColor);
 		} else
 			newImage = m_RegularImage;
-		float compQuality = (float) AppletParameters
+		float compQuality = (float) RGPTParams
 				.getIntVal("IMAGE_COMPRESSION") / (float) 10;
 		m_RegularImage = ImageUtils.compressImage(newImage, compQuality);
 		m_ThumbviewImage = ImageUtils.scaleImage(m_RegularImage, -1,
@@ -371,7 +371,7 @@ public class ImageHolder implements Serializable {
 			Color bgColor = ImageUtils.findPanelColor(m_RegularImage);
 			image = ImageUtils.fillTransparentPixels(image, bgColor);
 		}
-		float compQuality = (float) AppletParameters
+		float compQuality = (float) RGPTParams
 				.getIntVal("IMAGE_COMPRESSION") / (float) 10;
 		image = ImageUtils.compressImage(image, compQuality);
 		return image;
@@ -389,7 +389,7 @@ public class ImageHolder implements Serializable {
 	public void deriveDeviceCTM(ScalingFactor scaleFactor, Dimension panelSize,
 			boolean setScaledImage) {
 		deriveDeviceCTM(scaleFactor, panelSize,
-				AppletParameters.getIntVal("PanelMargin"), setScaledImage);
+				RGPTParams.getIntVal("PanelMargin"), setScaledImage);
 	}
 
 	public void deriveDeviceCTM(ScalingFactor scaleFactor, Dimension panelSize,
@@ -489,7 +489,7 @@ public class ImageHolder implements Serializable {
 						.toString();
 				String sphereFltr = RGPTActionListener.ImageFilterActions.SphereFilter
 						.toString();
-				float radFactor = AppletParameters
+				float radFactor = RGPTParams
 						.getFloatVal("ImageFilterRadialFactor");
 				StringBuffer ctrlPtsBuf = new StringBuffer();
 				if (m_ImageFilterAction.equals(ImageFilterActions.CircleFilter
@@ -540,7 +540,7 @@ public class ImageHolder implements Serializable {
 					// paramValues.get("DesGirdPts");
 					srcGridPts = new Vector<Point2D.Double>();
 					desGridPts = new Vector<Point2D.Double>();
-					int numGrid = AppletParameters.getIntVal("NumOfGrid");
+					int numGrid = RGPTParams.getIntVal("NumOfGrid");
 					int x = bounds.x, y = bounds.y, w = bounds.width, h = bounds.height;
 					float gridWt = 0.0F, gridHt = 0.0F;
 					double xPt = 0.0, yPt = 0.0;
@@ -822,7 +822,7 @@ public class ImageHolder implements Serializable {
 			if (onOffImgFltrs[i] == RGPTActionListener.ImageFilterActions.CircleFilter) {
 				imgFilterHdlr = m_ImageFilterController
 						.getImageFilterHandler(imgFilter);
-				float radFactor = AppletParameters
+				float radFactor = RGPTParams
 						.getFloatVal("ImageFilterRadialFactor");
 				if (imgFilterHdlr != null) {
 					paramFilterHdlr = (OnOffParamControlFilterHdlr) imgFilterHdlr;
@@ -858,7 +858,7 @@ public class ImageHolder implements Serializable {
 						desScrGridPts = (Vector<Point2D.Double>) fltrVals
 								.get("DesGirdPts");
 						Map<String, Object> ctm = null;
-						int numGrid = AppletParameters.getIntVal("NumOfGrid");
+						int numGrid = RGPTParams.getIntVal("NumOfGrid");
 						float gridWt = ((float) bounds.width) / (float) numGrid;
 						float gridHt = ((float) bounds.height)
 								/ (float) numGrid;
@@ -903,7 +903,7 @@ public class ImageHolder implements Serializable {
 			return;
 		ImageFilterHandler imgFilterHdlr = null;
 		OnOffParamControlFilterHdlr paramFilterHdlr = null;
-		float radFactor = AppletParameters
+		float radFactor = RGPTParams
 				.getFloatVal("ImageFilterRadialFactor");
 		imgFilterHdlr = m_ImageFilterController
 				.getImageFilterHandler(imgFilter);

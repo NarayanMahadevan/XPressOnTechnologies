@@ -66,7 +66,7 @@ import javax.swing.JPanel;
 import com.rgpt.imagefilters.ImageFilterUtils;
 import com.rgpt.imagefilters.SharpenFilter;
 import com.rgpt.imagefilters.UnsharpFilter;
-import com.rgpt.util.AppletParameters;
+import com.rgpt.util.RGPTParams;
 import com.rgpt.util.RGPTActionListener;
 import com.rgpt.util.RGPTLogger;
 import com.rgpt.util.RGPTShapeUtil;
@@ -1582,7 +1582,7 @@ public class ImageUtils {
 			float fadePerc, int rule) {
 		BufferedImage img = createImageCopy(origImage, true);
 		int imgWt = origImage.getWidth(), imgHt = origImage.getHeight();
-		int fadeRegions = AppletParameters.getIntVal("NumOfFadeRegion");
+		int fadeRegions = RGPTParams.getIntVal("NumOfFadeRegion");
 		double x = 0.0, y = 0.0, w = 0.0, h = 0.0; // int fadeIter = 0, i = 0;
 		double dx = 0.0, dy = 0.0, fadeIterPerc = 0.0;
 		double fadeWt = fadePerc * imgWt, fadeHt = fadePerc * imgHt;
@@ -1875,7 +1875,7 @@ public class ImageUtils {
 
 	public static BufferedImage fadeImage(BufferedImage origImage,
 			float fadePerc, boolean useSetRGB, String fadeType, int shapeTypeInd) {
-		Vector<String> shapeTypes = getShapes(AppletParameters
+		Vector<String> shapeTypes = getShapes(RGPTParams
 				.getVal("UserType"));
 		// RGPTLogger.logToFile("Shape Types: "+shapeTypes);
 		String shapeType = ShapeType.RECTANGULAR_SHAPE.toString();
@@ -1896,9 +1896,9 @@ public class ImageUtils {
 		if (useSetRGB)
 			img = createImageCopy(origImage, true);
 		int imgWt = origImage.getWidth(), imgHt = origImage.getHeight();
-		int minFadeRegions = AppletParameters.getIntVal("NumOfFadeRegion");
-		int maxFadeRegions = AppletParameters.getIntVal("MaxNumOfFadeRegion");
-		float fadeRegionSize = AppletParameters.getFloatVal("FadeRegionSize");
+		int minFadeRegions = RGPTParams.getIntVal("NumOfFadeRegion");
+		int maxFadeRegions = RGPTParams.getIntVal("MaxNumOfFadeRegion");
+		float fadeRegionSize = RGPTParams.getFloatVal("FadeRegionSize");
 		double x = 0.0, y = 0.0, w = 0.0, h = 0.0, dx = 0.0, dy = 0.0, fadeIterPerc = 0.0;
 		double fadeWt = fadePerc * imgWt, fadeHt = fadePerc * imgHt;
 		double newWt = (double) imgWt - fadeWt, newHt = (double) imgHt - fadeHt;
@@ -1952,7 +1952,7 @@ public class ImageUtils {
 				// Apply Shape Files
 				if (shapeTypeOrig == null) {
 					String shapeDir = RGPTUtil
-							.getShapesDirectory(AppletParameters
+							.getShapesDirectory(RGPTParams
 									.getVal("UserType"));
 					String serFilePath = shapeDir + "/" + shapeType;
 					try {
@@ -2785,7 +2785,7 @@ public class ImageUtils {
 	public static BufferedImage createColorImage(Color paramColor,
 			String propName) {
 		int imgWt = 0, imgHt = 0;
-		String[] imgSize = AppletParameters.getVal("InfoMesgImageSize").split(
+		String[] imgSize = RGPTParams.getVal("InfoMesgImageSize").split(
 				"x");
 		imgWt = Integer.valueOf(imgSize[0]);
 		imgHt = imgWt;

@@ -19,7 +19,7 @@ import com.rgpt.templateutil.VDPFieldInfo;
 import com.rgpt.templateutil.VDPImageFieldInfo;
 import com.rgpt.templateutil.VDPTextFieldInfo;
 import com.rgpt.templateutil.XODImageInfo;
-import com.rgpt.util.AppletParameters;
+import com.rgpt.util.RGPTParams;
 import com.rgpt.util.RGPTShapeUtil;
 import com.rgpt.util.RGPTUtil;
 
@@ -121,7 +121,7 @@ public class XONImagingEngine
       } else if (vdpFld.isWarpFilter()) {
          Map<String, Object> ctrlValues = vdpFld.getImageFilterControlValues(); 
          // drawing horizontal line
-         int numGrid = AppletParameters.getIntVal("NumOfGrid"); 
+         int numGrid = RGPTParams.getIntVal("NumOfGrid"); 
          Vector<Point2D.Double> srcGridPtList=null, desGridPtList=null, gridPtLists=null; 
          srcGridPtList = (Vector<Point2D.Double>) ctrlValues.get("SrcGirdPts"); 
          desGridPtList = (Vector<Point2D.Double>) ctrlValues.get("DesGirdPts"); 

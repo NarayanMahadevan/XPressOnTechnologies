@@ -65,8 +65,8 @@ public class RGPTUIManager
       UIManager.put("ScrollBar.thumbDarkShadow", colordark);
       UIManager.put("ScrollBar.thumbHighlight", colordark);
       UIManager.put("ScrollBar.thumbShadow", colordark);
-      UIManager.put("ScrollBar.width", AppletParameters.getIntVal("ScrollBarWidth"));
-      UIManager.put("ScrollBar.hright", AppletParameters.getIntVal("ScrollBarHeight"));
+      UIManager.put("ScrollBar.width", RGPTParams.getIntVal("ScrollBarWidth"));
+      UIManager.put("ScrollBar.hright", RGPTParams.getIntVal("ScrollBarHeight"));
 
       UIManager.put("ScrollPane.background", colorpanel);
       UIManager.put("ScrollPane.foreground", textColor);

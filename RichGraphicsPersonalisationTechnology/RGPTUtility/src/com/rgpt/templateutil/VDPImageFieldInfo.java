@@ -20,7 +20,7 @@ import com.rgpt.imageutil.ImageFilterController;
 import com.rgpt.imageutil.ImageFilterHandler;
 import com.rgpt.imageutil.ImageHolder;
 import com.rgpt.imageutil.ImageUtils;
-import com.rgpt.util.AppletParameters;
+import com.rgpt.util.RGPTParams;
 import com.rgpt.util.ClipPath;
 import com.rgpt.util.RGPTActionListener;
 import com.rgpt.util.RGPTLogger;
@@ -263,7 +263,7 @@ public class VDPImageFieldInfo extends VDPFieldInfo implements Serializable,
 			m_RecycleMemoryData.lastAccess = Calendar.getInstance()
 					.getTimeInMillis();
 		if (handleMemory) {
-			int duration = AppletParameters.getIntVal("ImageMemoryDuration");
+			int duration = RGPTParams.getIntVal("ImageMemoryDuration");
 			m_RecycleMemoryData = RGPTMemoryManager.getInstance().handleMemory(
 					duration * 1000, this, null);
 		}

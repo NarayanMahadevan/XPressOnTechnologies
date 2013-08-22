@@ -11,7 +11,7 @@ public class LocalizationUtil
    {
       Locale locale;
       String language="en", country="US";
-      Properties prop = AppletParameters.m_ServerProperties;
+      Properties prop = RGPTParams.m_RGPTProperties;
       boolean useDefault = true;
       if (prop != null) {
          useDefault = false;

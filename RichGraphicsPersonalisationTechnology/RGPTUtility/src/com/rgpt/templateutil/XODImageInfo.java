@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import com.rgpt.imageutil.ImageHolder;
-import com.rgpt.util.AppletParameters;
+import com.rgpt.util.RGPTParams;
 import com.rgpt.util.RGPTLogger;
 import com.rgpt.util.RGPTUtil;
 import com.rgpt.util.ScalingFactor;
@@ -96,7 +96,7 @@ public class XODImageInfo implements Serializable {
 
 	public void deriveDeviceCTM(ScalingFactor scaleFactor, Dimension panelSize) {
 		deriveDeviceCTM(scaleFactor, panelSize,
-				AppletParameters.getIntVal("PanelMargin"));
+				RGPTParams.getIntVal("PanelMargin"));
 	}
 
 	public void deriveDeviceCTM(ScalingFactor scaleFactor, Dimension panelSize,
@@ -144,8 +144,8 @@ public class XODImageInfo implements Serializable {
 
 	public VDPImageFieldInfo addImageField(ImageHolder imgHldr)
 			throws Exception {
-		int wt = AppletParameters.getIntVal("ThumbviewImageWidth");
-		int ht = AppletParameters.getIntVal("ThumbviewImageHeight");
+		int wt = RGPTParams.getIntVal("ThumbviewImageWidth");
+		int ht = RGPTParams.getIntVal("ThumbviewImageHeight");
 		imgHldr.setVDPImageData(wt, ht, m_TempStorageDir);
 		BufferedImage thumbImg = (BufferedImage) imgHldr.m_ThumbviewImage;
 		wt = thumbImg.getWidth();
@@ -156,7 +156,7 @@ public class XODImageInfo implements Serializable {
 				false);
 		vdpImgFld.m_ImageHolder = imgHldr;
 		// Set the Initial Screen Rect to position this Image within the Canvas
-		int x = AppletParameters.getIntVal("IDAppsImageStartPt"), y = x;
+		int x = RGPTParams.getIntVal("IDAppsImageStartPt"), y = x;
 		vdpImgFld.m_ScreenPathPoints = new Vector<Point2D.Double>();
 		setPathPoints(vdpImgFld.m_ScreenPathPoints, x, y, wt, ht);
 		vdpImgFld.setGPathPts(m_ScreenToImageCTM, false);

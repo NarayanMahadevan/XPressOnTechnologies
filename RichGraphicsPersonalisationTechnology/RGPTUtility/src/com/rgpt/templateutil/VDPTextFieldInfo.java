@@ -24,7 +24,6 @@ import java.util.Properties;
 import java.util.Vector;
 
 import com.rgpt.imageutil.ImageHolder;
-import com.rgpt.serverhandler.PDFPageHandler;
 import com.rgpt.util.FontStreamHolder;
 import com.rgpt.util.RGPTLogger;
 import com.rgpt.util.RGPTRectangle;
@@ -252,11 +251,11 @@ public class VDPTextFieldInfo extends VDPFieldInfo implements Serializable {
 		if (m_PrefixValue == null)
 			m_PrefixValue = "";
 		if (m_TextAllignment.equals("LEFT"))
-			m_TextAllignment = PDFPageHandler.ALLIGN_LEFT;
+			m_TextAllignment = StaticFieldInfo.ALLIGN_LEFT;
 		else if (m_TextAllignment.equals("CENTER"))
-			m_TextAllignment = PDFPageHandler.ALLIGN_CENTER;
+			m_TextAllignment = StaticFieldInfo.ALLIGN_CENTER;
 		else if (m_TextAllignment.equals("RIGHT"))
-			m_TextAllignment = PDFPageHandler.ALLIGN_RIGHT;
+			m_TextAllignment = StaticFieldInfo.ALLIGN_RIGHT;
 
 		// Setting the Flags using m_FontFlags
 		int len = m_FontFlags.length();
