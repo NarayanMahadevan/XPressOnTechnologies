@@ -24,12 +24,12 @@ import com.rgpt.imageutil.ImageHolder;
 import com.rgpt.imageutil.SelectedImageHandler;
 import com.rgpt.pdflib.ImageSelectionController;
 import com.rgpt.pdflib.PDFElemSelHandler;
-import com.rgpt.pdflib.PDFElemSelHolder;
-import com.rgpt.pdflib.PDFElemSelHolder.SelType;
 import com.rgpt.pdflib.PDFLibException;
 import com.rgpt.pdflib.PDFMatrix2D;
 import com.rgpt.pdflib.PDFPage.PageData;
 import com.rgpt.pdflib.PDFViewHandler;
+import com.rgpt.pdflib.VDPElement;
+import com.rgpt.pdflib.VDPElement.SelType;
 import com.rgpt.util.RGPTLogger;
 import com.rgpt.util.RGPTUtil;
 import com.rgpt.viewer.ThumbviewToolBar;
@@ -66,9 +66,13 @@ public class PDFElemSelController implements PDFElemSelHandler {
 	public void selectImageElements(int x, int y) {
 		try {
 			Point2D.Double pgPt = m_PDFViewCtrl.convScreenPtToPagePt(x, y);
+			RGPTLogger.logDebugMesg("Page Pts: " + pgPt);
 			Element elem = getImageElements(pgPt.x, pgPt.y);
+			RGPTLogger.logDebugMesg("Element Selected: " + elem);
 			addSelectedImage(elem);
 		} catch (PDFNetException ex) {
+
+		} catch (PDFLibException ex) {
 
 		}
 	}
@@ -129,17 +133,22 @@ public class PDFElemSelController implements PDFElemSelHandler {
 		}
 	}
 
-	public void addSelectedImage(Element elem) throws PDFNetException {
+	public void addSelectedImage(Element elem) throws PDFNetException,
+			PDFLibException {
 		// Refer line 2914
 		Rect rect = elem.getBBox();
 		int currentpage = m_PDFPage.getIndex();
 		// Search image is in selection prior to loading
-		Vector<PDFElemSelHolder> vdpElements = m_PDFViewer.m_VDPElements;
+		Vector<VDPElement> vdpElements = m_PDFViewer.m_VDPElements;
+
+		// This is the last selection added to the Vector
+		int selIndex = vdpElements.size() - 1;
+
 		if (PDFNetUtil.searchVDPElement(vdpElements, currentpage, rect,
 				SelType.IMAGE) < 0) {
 			// Refer line 1124
-			// vdpElements.addElement(addSelection(currentpage, rect,
-			// SelType.IMAGE, elem));
+			vdpElements.addElement(VDPElementHandler.createVDPElement(
+					currentpage, SelType.IMAGE, elem, selIndex));
 		}
 	}
 

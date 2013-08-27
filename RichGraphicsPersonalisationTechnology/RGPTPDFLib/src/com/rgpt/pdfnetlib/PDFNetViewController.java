@@ -13,27 +13,31 @@ import pdftron.PDF.PDFViewCtrl;
 import pdftron.PDF.PDFViewScrollPane;
 
 import com.rgpt.pdflib.PDFDoc;
-import com.rgpt.pdflib.PDFElemSelHolder;
 import com.rgpt.pdflib.PDFErrorReportListener;
 import com.rgpt.pdflib.PDFLibException;
 import com.rgpt.pdflib.PDFMatrix2D;
 import com.rgpt.pdflib.PDFPageListener;
 import com.rgpt.pdflib.PDFViewHandler;
+import com.rgpt.pdflib.VDPElement;
 
 public class PDFNetViewController implements PDFViewHandler {
 
-	PDFViewCtrl m_PDFViewCtrl;
+	PDFNetViewer m_PDFViewCtrl;
 
 	// This maintains PDF Image Elements for every Page
 	Map<Integer, Vector<Map<String, Object>>> m_PageImageElements;
 
 	// This maintains the Elements that are selected for Variable Data Element
-	Vector<PDFElemSelHolder> m_VDPElements;
+	Vector<VDPElement> m_VDPElements;
 
 	public PDFNetViewController() {
-		m_PDFViewCtrl = new PDFViewCtrl();
+		// m_PDFViewCtrl = new PDFViewCtrl();
 		m_PageImageElements = new HashMap<Integer, Vector<Map<String, Object>>>();
-		m_VDPElements = new Vector<PDFElemSelHolder>();
+		m_VDPElements = new Vector<VDPElement>();
+	}
+
+	void setPDFViewCtrl(PDFNetViewer viewer) {
+		m_PDFViewCtrl = viewer;
 	}
 
 	@Override

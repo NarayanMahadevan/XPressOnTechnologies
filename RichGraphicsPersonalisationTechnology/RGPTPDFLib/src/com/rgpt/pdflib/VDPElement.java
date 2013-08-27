@@ -10,12 +10,20 @@ import java.util.Map;
  * 
  */
 
-public class PDFElemSelHolder {
+public class VDPElement {
 
 	public int page_num;
 
 	public enum SelType {
 		TEXT, IMAGE, PATH
+	}
+
+	public enum ImageAttr {
+		Name, Length, Value, Type, ThemeId, AllowUploadWithTheme, ImageHeight,
+		ImageWidth, ColorComponents, RenderingIntent, BitsPerComponent,
+		ImageXObjectRef, UsePictureFrame, OpaquePictureFrame, FrameFilePath,
+		ElementCTM, ClipSegmentCount, SetImageMask, ImageMask,
+		IsBackgoundImage, IsVDPPrepopulated
 	}
 
 	public SelType sel_type;
@@ -31,7 +39,7 @@ public class PDFElemSelHolder {
 	// The attributes of PDF Element in Name Value pair...
 	public Map<String, Object> namevalue;
 
-	public PDFElemSelHolder(int pageNum, SelType selType, PDFRect bbox) {
+	public VDPElement(int pageNum, SelType selType, PDFRect bbox) {
 		page_num = pageNum;
 		sel_type = selType;
 		rect = bbox;

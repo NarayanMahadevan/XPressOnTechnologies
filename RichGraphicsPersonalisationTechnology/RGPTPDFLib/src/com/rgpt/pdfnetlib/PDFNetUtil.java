@@ -23,9 +23,9 @@ import pdftron.SDF.Obj;
 
 import com.rgpt.imageutil.ImageHolder;
 import com.rgpt.imageutil.ImageUtils;
-import com.rgpt.pdflib.PDFElemSelHolder;
-import com.rgpt.pdflib.PDFElemSelHolder.SelType;
 import com.rgpt.pdflib.PDFLibException;
+import com.rgpt.pdflib.VDPElement;
+import com.rgpt.pdflib.VDPElement.SelType;
 import com.rgpt.util.RGPTLogger;
 import com.rgpt.util.RGPTUtil;
 
@@ -198,12 +198,12 @@ public class PDFNetUtil {
 	 * @return the index of the VDP Element at the selElemRect
 	 * @throws PDFNetException
 	 */
-	public static int searchVDPElement(Vector<PDFElemSelHolder> vdpElements,
+	public static int searchVDPElement(Vector<VDPElement> vdpElements,
 			int pageno, Rect selElemRect, SelType seltype)
 			throws PDFNetException {
-		PDFElemSelHolder vdpElem = null;
+		VDPElement vdpElem = null;
 		for (int i1 = 0; i1 < vdpElements.size(); ++i1) {
-			vdpElem = (PDFElemSelHolder) vdpElements.elementAt(i1);
+			vdpElem = (VDPElement) vdpElements.elementAt(i1);
 			if (vdpElem.page_num != pageno || vdpElem.sel_type != seltype)
 				continue;
 			Rectangle2D vdprect = ((Rect) vdpElem.rect.getPDFRect())
@@ -293,7 +293,7 @@ public class PDFNetUtil {
 	 */
 	public static Vector<Map<String, Object>> getImageElements(int pgNo,
 			Vector<Map<String, Object>> pageImageElements,
-			Vector<PDFElemSelHolder> vdpElements, double x, double y)
+			Vector<VDPElement> vdpElements, double x, double y)
 			throws PDFNetException {
 		Rectangle2D.Double imageBBox = null;
 		Map<String, Object> imageElem = null, contImgElem = null;

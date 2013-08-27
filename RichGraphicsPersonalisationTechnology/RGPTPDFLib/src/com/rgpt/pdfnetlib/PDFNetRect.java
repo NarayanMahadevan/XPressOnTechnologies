@@ -14,6 +14,10 @@ public class PDFNetRect extends PDFRect {
 
 	Rect m_Rect;
 
+	public PDFNetRect(Rect rect) {
+		m_Rect = rect;
+	}
+
 	@Override
 	public void set(Rectangle2D.Double rect) throws PDFLibException {
 		try {

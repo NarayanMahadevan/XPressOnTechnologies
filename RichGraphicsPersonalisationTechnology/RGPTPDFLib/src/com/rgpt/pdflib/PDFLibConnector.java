@@ -12,6 +12,7 @@ import com.rgpt.pdfnetlib.PDFElemSelController;
 import com.rgpt.pdfnetlib.PDFNetDoc;
 import com.rgpt.pdfnetlib.PDFNetUtil;
 import com.rgpt.pdfnetlib.PDFNetViewController;
+import com.rgpt.pdfnetlib.PDFNetViewer;
 import com.rgpt.pdfnetlib.PDFThumbview;
 
 /**
@@ -70,6 +71,14 @@ public class PDFLibConnector {
 			PDFNetUtil.terminatePDFLib();
 			break;
 		}
+	}
+
+	public PDFView getPDFView() {
+		switch (m_SelectedPDFLib) {
+		case PDFNET:
+			return new PDFNetViewer();
+		}
+		return null;
 	}
 
 	public PDFViewHandler getPDFViewHandler() {

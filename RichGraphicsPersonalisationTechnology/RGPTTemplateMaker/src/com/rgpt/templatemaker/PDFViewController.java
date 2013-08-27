@@ -15,13 +15,14 @@ import com.rgpt.pdflib.PDFLibException;
 import com.rgpt.pdflib.PDFMatrix2D;
 import com.rgpt.pdflib.PDFPage.PageData;
 import com.rgpt.pdflib.PDFThumbViewHandler;
+import com.rgpt.pdflib.PDFView;
+import com.rgpt.pdflib.PDFView.VDPMode;
 import com.rgpt.pdflib.PDFViewHandler;
 import com.rgpt.util.LocalizationUtil;
 import com.rgpt.util.PDFFilter;
 import com.rgpt.util.RGPTLogger;
 import com.rgpt.util.RGPTParams;
 import com.rgpt.util.RGPTUIUtil;
-import com.rgpt.util.StaticFieldInfo;
 
 /**
  * This is a singleton class and the main purpose is to be a bridge to interact
@@ -53,8 +54,9 @@ public class PDFViewController {
 	// 2 - Image Mode
 	// 3 - Draw Text Curve Mode
 	// 4 - Draw Text Rect Mode
-	public int m_VDPMode = 0;
+	public VDPMode m_VDPMode = VDPMode.NULL;
 
+	public PDFView m_PDFView;
 	public PDFLibConnector m_PDFLibConnector;
 	public PDFViewer m_PDFViewer;
 	public PDFViewHandler m_PDFViewHandler;
@@ -106,6 +108,8 @@ public class PDFViewController {
 
 		// Creating PDF View Handler to display PDF Pages
 		m_PDFViewHandler = m_PDFLibConnector.getPDFViewHandler();
+		m_PDFView = m_PDFLibConnector.getPDFView();
+		m_PDFView.setPPFHandler(m_PDFViewHandler);
 		m_PDFViewHandler.setDoc(doc);
 		m_PDFViewHandler.setPDFPageListener(m_RGPTTemplateMaker.m_StatusBar,
 				null);
@@ -138,7 +142,7 @@ public class PDFViewController {
 					.getPageData();
 			RGPTLogger.logDebugMesg("DeviceCTM: " + m_DeviceCTM + " PageData: "
 					+ m_PDFPageData);
-			m_PDFViewer.setPDFElemSelHandler(m_PDFLibConnector
+			m_PDFView.setPDFElemSelHandler(m_PDFLibConnector
 					.createPDFElemSelHandler(m_DeviceCTM, m_PDFPageData));
 		} catch (PDFLibException ex) {
 			ex.printStackTrace();
@@ -177,11 +181,11 @@ public class PDFViewController {
 		// No Action taken if there is no active PDF Document
 		if (!isPDFDocActive())
 			return;
-		if (m_VDPMode == StaticFieldInfo.MARK_IMAGE) {
+		if (m_VDPMode == VDPMode.MARK_IMAGE) {
 			resetVDPMode();
 			return;
 		}
-		m_VDPMode = StaticFieldInfo.MARK_IMAGE;
+		m_VDPMode = VDPMode.MARK_IMAGE;
 		String dispSelMode = LocalizationUtil.getText("VDPModeSelImage");
 		String dispStatus = LocalizationUtil.getText("DispStatusSelImage");
 		setVDPMode(Cursor.DEFAULT_CURSOR, dispSelMode, dispStatus);
@@ -202,7 +206,7 @@ public class PDFViewController {
 		m_RGPTTemplateMaker.setCursor(Cursor.DEFAULT_CURSOR);
 		m_RGPTTemplateMaker.m_StatusBar.displaymode(" ");
 		m_SelMode = SelMode.NONE;
-		m_VDPMode = 0;
+		m_VDPMode = VDPMode.NULL;
 	}
 
 	public boolean isPDFDocActive() {
@@ -212,7 +216,10 @@ public class PDFViewController {
 	}
 
 	public void close() {
+		resetVDPMode();
+		m_PDFView.close();
 		m_PDFViewer.close();
+		m_PDFView = null;
 		m_PDFViewHandler = null;
 		m_PDFThumbView = null;
 		m_RGPTTemplateMaker.resetView();
